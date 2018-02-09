@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
 public class QuadTreeNode<T extends Object2D> {
 
     public static final int MAX_OBJECTS_PER_NODE = 2;
-    public static final int MAX_DEPTH            = 4;
+    public static final int MAX_DEPTH            = 6;
     private Map<NodeType, QuadTreeNode<T>> nodes;
     private int     depth       = 0;
     private boolean hasChildren = false;
@@ -24,7 +24,7 @@ public class QuadTreeNode<T extends Object2D> {
 
     public void eachLeaf(QuadTree.EachLeaf eachLeaf)
     {
-        this.leafsAll().forEach(eachLeaf::execute);
+        this.getFlatItems().forEach(eachLeaf::execute);
     }
 
     @SuppressWarnings("unchecked")
@@ -37,19 +37,19 @@ public class QuadTreeNode<T extends Object2D> {
         nodeExecute.accept(nodeExecute, this);
     }
 
-    public Set<T> leafsAll()
+    public Set<T> getFlatItems()
     {
         Set<T> items = new HashSet<>();
         items.addAll(this.leafs);
 
         if (this.hasChildren) {
-            this.nodes().forEach((nodeType, node) -> items.addAll(node.leafsAll()));
+            this.nodes().forEach((nodeType, node) -> items.addAll(node.getFlatItems()));
         }
 
         return items;
     }
 
-    public Set<T> leafs()
+    public Set<T> getLeafs()
     {
         return this.leafs;
     }
@@ -58,7 +58,7 @@ public class QuadTreeNode<T extends Object2D> {
     public void updateBelongs()
     {
         if (this.hasChildren) {
-            if(this.leafsAll().size() > 0) {
+            if(this.getFlatItems().size() > 0) {
                 this.nodes.forEach((nodeType, node) -> node.updateBelongs());
             }
         } else {
@@ -76,7 +76,7 @@ public class QuadTreeNode<T extends Object2D> {
     public void updateNodes()
     {
         if(this.hasChildren) {
-            if(this.leafsAll().size() == 0) {
+            if(this.getFlatItems().size() == 0) {
                 this.nodes.forEach((nodeType, node) -> this.nodes.remove(nodeType));
                 this.hasChildren = false;
             } else {
@@ -206,7 +206,7 @@ public class QuadTreeNode<T extends Object2D> {
 
     public String toString()
     {
-        return String.format("QuadTreeNode{ bounds: %s, \nleafs: %s,\n nodes: %s }", this.bounds, this.leafs.size(),
+        return String.format("QuadTreeNode{ bounds: %s, \ngetLeafs: %s,\n nodes: %s }", this.bounds, this.leafs.size(),
                 this.nodes);
     }
 }

@@ -22,8 +22,6 @@ public class EntityCircle extends Entity<EntityCircle> {
         this.setY(this.y() + (this.velocity.y() * elapsedTime));
         this.velocity().setY(this.velocity.y() + TestVectorLoop.gravity);
 
-        this.compareTo(this);
-
         if (this.maxX() > this.bounds.getMaxX()) {
             this.setX(this.bounds.getMaxX() - this.width());
             this.velocity().setX(-this.velocity().x());

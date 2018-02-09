@@ -79,14 +79,14 @@ public class MainLoop extends Loop implements QuadTree.EachLeaf {
     protected void update(float elapsedTime)
     {
 //        System.out.println(elapsedTime / Loop.ONE_NANO_SECOND);
-        this.tree.rootNode().leafsAll().forEach(entity -> entity.move(elapsedTime));
+        this.tree.rootNode().getFlatItems().forEach(entity -> entity.move(elapsedTime));
         this.tree.update();
 
         this.tree.rootNode().eachNode(treeNode -> {
-            if (!treeNode.hasChildren() && treeNode.leafs().size() > 0) {
+            if (!treeNode.hasChildren() && treeNode.getLeafs().size() > 0) {
 
-                for (Entity entityA : (Iterable<Entity>) treeNode.leafs()) {
-                    for (Entity entityB : (Iterable<Entity>) treeNode.leafs()) {
+                for (Entity entityA : (Iterable<Entity>) treeNode.getLeafs()) {
+                    for (Entity entityB : (Iterable<Entity>) treeNode.getLeafs()) {
                         System.out.println(entityA.velocity().normalize().distance(entityB.velocity().normalize()));
                     }
                 }
@@ -118,7 +118,7 @@ public class MainLoop extends Loop implements QuadTree.EachLeaf {
                 int width  = (int) node.getBounds().width;
                 int height = (int) node.getBounds().height;
 
-                graphics2D.drawString(String.valueOf(node.leafs().size()), x + 2, y + 10);
+                graphics2D.drawString(String.valueOf(node.getLeafs().size()), x + 2, y + 10);
                 graphics2D.drawRect(x, y, width, height);
             }
         };
@@ -127,7 +127,7 @@ public class MainLoop extends Loop implements QuadTree.EachLeaf {
 
         graphics2D.setColor(Color.GREEN);
 
-        this.tree.rootNode().leafsAll().forEach(entity -> {
+        this.tree.rootNode().getFlatItems().forEach(entity -> {
 
 //            if(entity.getState().collision == EntityState.Collision.YES) {
 //                graphics2D.setColor(Color.RED);

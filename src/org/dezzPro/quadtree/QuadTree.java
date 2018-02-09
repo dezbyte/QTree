@@ -34,7 +34,7 @@ public class QuadTree<T extends Object2D & Comparable<T>> {
     public Set<T> leafsAll()
     {
         if(this.items == null) {
-            this.items = this.root.leafsAll();
+            this.items = this.root.getFlatItems();
         }
 
         return this.items;

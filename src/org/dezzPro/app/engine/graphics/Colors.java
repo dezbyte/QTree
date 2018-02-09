@@ -17,7 +17,7 @@ public enum Colors {
         this.hex = hex;
     }
 
-    public Color color()
+    public Color getColor()
     {
         return new Color(this.hex);
     }
