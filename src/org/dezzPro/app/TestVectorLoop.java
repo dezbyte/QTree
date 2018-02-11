@@ -26,6 +26,7 @@ public class TestVectorLoop extends Loop {
   private int[][] points = new int[][]{{0, 15, 17, 33, 41, 13}, {0, 15, 0, 8, 55, 70}};
 
   public TestVectorLoop() {
+
     super("vector_test_loop");
 
     this.quadTree = new QuadTree<>(0, 0, MainFrame.WIDTH, MainFrame.HEIGHT);
@@ -114,94 +115,51 @@ public class TestVectorLoop extends Loop {
   private void drawTestVectors() {
     Graphics2D graphics2D = this.mainFrame.getGraphics2D();
 
-    int cx = 400;
+    int cx = 320;
     int cy = 300;
 
-    factor = factor % (Math.PI * 2);
-    factor += 0.001D;
+    factor = (factor + 0.005D) % (Math.PI * 2);
 
     int lx = (int) (cx + Math.sin(this.factor) * 100);
     int ly = (int) (cy + Math.cos(this.factor) * 100);
 
-//    System.out.printf("sin: %s, factor: %s%n", Math.sin(this.factor), this.factor);
-
-    Polygon triangle = new Polygon();
-    triangle.addPoint(cx, cy);
-    triangle.addPoint(lx, ly);
-    triangle.addPoint(cx, cy+100);
-    graphics2D.drawPolygon(triangle);
-
     graphics2D.setColor(Colors.BLUE.getColor());
     graphics2D.drawLine(cx, cy, lx, ly);
 
-    graphics2D.setColor(Colors.ORANGE.getColor());
+    graphics2D.setColor(Colors.DEEP_PINK.getColor());
     this.rotatePolygon(graphics2D, cx, cy, lx, ly);
 
-    Polygon polygon = new Polygon(points[0], points[1], 6);
-    graphics2D.fillPolygon(polygon);
+//    graphics2D.setColor(Colors.CRIMSON.getColor());
+//    Polygon polygon = new Polygon(points[0], points[1], 6);
+//    graphics2D.fillPolygon(polygon);
 
     graphics2D.setColor(Colors.SPRING.getColor());
     graphics2D.fillOval(cx, cy, 6, 6);
   }
 
-//  public static void _render() {
-//    bufferGraphics.setColor(new Color(0xff0000ff));
-//    bufferGraphics.fillOval((int) (350 + (Math.sin(delta)  200)), (int) (-1  (350 + (Math.sin(delta) * 200))), 100, 100);
-//    System.out.println(Math.sin(Math.PI));
-//    ((Graphics2D) bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//    delta += 0.02f;
-//  }
 
   protected void rotatePolygon(Graphics2D graphics2D, int x1, int y1, int x2, int y2) {
-//    Vector2D vectorA = new Vector2D(x1, y1);
-//    Vector2D vectorB = new Vector2D(x2, y2);
 
-//    double distance = vectorA.distance(vectorB);
-
-/*
-    double distance = vectorA.distance(vectorB);
-    double sin = (y2 - y1) / distance;
-    double cos = (x2 - x1) / distance;
-    double xa = (distance * cos) + x1;
-    double ya = (distance * sin) + y1;
-*/
     Polygon polygon = new Polygon();
 
-    for (int i = 0; i < 6; i++)
-    {
-      Vector2D vectorA = new Vector2D(400, 300);
-      Vector2D vectorB = new Vector2D(points[0][i], points[1][i]);
-      Vector2D vectorC = new Vector2D(x2, y2);
+    Vector2D va = new Vector2D(x1, y1);
+    Vector2D vb = new Vector2D(x2, y2);
+    double dab = va.distance(vb);
 
-      double distanceA = vectorA.distance(vectorB);
-      double distanceB = vectorA.distance(vectorC);
+    for (int i = 0; i < 6; i++) {
 
-      double cos = (x2 - x1) / distanceB;
-      double sin = (y2 - y1) / distanceB;
+      int px = points[0][i];
+      int py = points[1][i];
 
-      double xa = (distanceA * cos);// - (points[0][i] * sin);
-      double ya = (distanceA * sin);// + (points[1][i] * cos);
+      double sin = (x2 - x1) / dab;
+      double cos = (y2 - y1) / dab;
+      double xa = (px * sin + py * cos) + x2;
+      double ya = (px * cos - py * sin) + y2;
 
       polygon.addPoint((int) xa, (int) ya);
     }
 
     graphics2D.fillPolygon(polygon);
-
-    //    double xb = (delta * cos) - (sin * -width) + x1;
-    //    double yb = (delta * sin) + (cos * -width) + y1;
-
-    //    Polygon polygon = new Polygon();
-    //
-    //    polygon.addPoint(x2, y2);
-    //    polygon.addPoint((int) xa, (int) ya);
-    //    polygon.addPoint((int) xb, (int) yb);
-
-    //    graphics2D.fillPolygon(polygon);
-
-    //    graphics2D.setColor();
-
-//    graphics2D.fillOval((int) xa, (int) ya, 10, 10);
   }
 
 }
