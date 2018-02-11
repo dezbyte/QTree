@@ -23,7 +23,7 @@ public class TestVectorLoop extends Loop {
 
   private double factor = 0.00D;
 
-  private int[][] points = new int[][]{{0, 15, 17, 33, 41, 13}, {0, 15, 0, 8, 55, 70}};
+  private int[][] points = new int[][]{{1, 15, 33, 66, 41, 13}, {3, 15, 0, 8, 55, 70}};
 
   public TestVectorLoop() {
 
